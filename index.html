@@ -27,11 +27,17 @@
     <div class="tab-nav-inner">
       <button class="tab-btn active" data-div="10U">10U Division</button>
       <button class="tab-btn" data-div="12U">12U Division</button>
+      <button class="tab-btn" data-div="map">Map</button>
+      <button class="tab-btn" data-div="sponsors">Sponsors</button>
+      <button class="tab-btn" data-div="vendors">Vendors</button>
     </div>
   </nav>
 
   <!-- ─── Main Content ──────────────────────────────────────────────────── -->
   <main class="main">
+
+    <!-- Field detection indicator (shown when geolocation detects a field) -->
+    <div id="field-indicator" class="field-indicator" aria-live="polite"></div>
 
     <!-- 10U Panel -->
     <div class="division-panel active" id="panel-10U">
@@ -55,6 +61,31 @@
       </div>
     </div>
 
+    <!-- Map Panel -->
+    <div class="division-panel" id="panel-map">
+      <img src="images/map2026.png" alt="Tournament field map" style="max-width:100%;display:block;margin:0 auto;">
+    </div>
+
+    <!-- Sponsors Panel -->
+    <div class="division-panel" id="panel-sponsors">
+      <div class="sp-panel-header">
+        <div class="division-tag">Thank You!</div>
+        <div class="division-title">Our Sponsors</div>
+        <p class="sp-subtitle">We're grateful for the support of these amazing organizations.</p>
+      </div>
+      <div class="sp-grid" id="sponsors-grid"></div>
+    </div>
+
+    <!-- Vendors Panel -->
+    <div class="division-panel" id="panel-vendors">
+      <div class="sp-panel-header">
+        <div class="division-tag">At The Park</div>
+        <div class="division-title">Vendors</div>
+        <p class="sp-subtitle">Find these vendors at the tournament today.</p>
+      </div>
+      <div class="sp-grid" id="vendors-grid"></div>
+    </div>
+
     <p class="last-updated" id="last-updated"></p>
     <div class="admin-link-wrap">
       <a class="admin-link" href="admin.html">Score Admin ›</a>
@@ -68,8 +99,12 @@
     <a href="https://www.medfordyouthgirlssoftball.org" target="_blank" rel="noopener">medfordyouthgirlssoftball.org</a>
   </footer>
 
+  <!-- Score alert overlay — shown on new score via JS -->
+  <div id="score-alert" class="score-alert" role="alert" aria-live="assertive"></div>
+
   <script src="js/data.js"></script>
   <script src="js/bracket.js"></script>
+  <script src="js/sponsors.js"></script>
   <script>
     // Show last updated time
     const keys = ['mygs_bracket_10U', 'mygs_bracket_12U'];
@@ -78,13 +113,15 @@
       document.getElementById('last-updated').textContent = 'Results update automatically · Refresh for latest';
     }
 
-    // Auto-refresh every 60 seconds to pick up any changes from admin device
+    // Auto-refresh every 60 seconds; diff for score changes first
     setInterval(() => {
       const active = document.querySelector('.division-panel.active');
-      if (active) {
-        const divKey = active.id.replace('panel-', '');
-        renderBracket(divKey);
-      }
+      if (!active) return;
+      const divKey = active.id.replace('panel-', '');
+      if (!DIVISIONS[divKey]) return; // skip non-bracket tabs
+      const changed = checkForScoreChanges(divKey);
+      if (changed.length) showScoreAlert(changed[0]);
+      renderBracket(divKey);
     }, 60000);
   </script>
 </body>

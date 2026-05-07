@@ -1,6 +1,6 @@
 // ─── Tournament Bracket Data ────────────────────────────────────────────────
 // Edit ADMIN_PIN here to change the admin password.
-const ADMIN_PIN = '1994';
+const ADMIN_PIN = '199444';
 
 const DIVISIONS = {
   '10U': {

@@ -1,5 +1,23 @@
 // ─── Bracket Renderer (index.html) ──────────────────────────────────────────
 
+// GPS coordinates for each field at Tufts Park, 437 Main St, Medford MA.
+// Verify/update these by dropping pins in Google Maps satellite view on the park,
+// or by walking to each field and reading navigator.geolocation on a phone.
+const FIELD_COORDS = {
+  'Tufts Parking Lot Field': { lat: 42.4078, lng: -71.1158 }, // near Granville Ave parking lot
+  'Tufts Pool Field':        { lat: 42.4092, lng: -71.1148 }, // near pool, north of playground field
+  'Tufts Playground Field':  { lat: 42.4085, lng: -71.1152 }, // adjacent to playground
+};
+const FIELD_DETECT_RADIUS_M = 120;
+
+window._detectedField = null;
+
+// Snapshot at load time so the 60s diff has a baseline
+const lastKnownState = {
+  '10U': JSON.parse(JSON.stringify(getGames('10U'))),
+  '12U': JSON.parse(JSON.stringify(getGames('12U'))),
+};
+
 function getDisplayName(games, gameId, slot) {
   const name = resolveTeam(games, gameId, slot);
   if (name) return { text: name, tbd: false };
@@ -62,23 +80,20 @@ function renderBracket(divKey) {
   const finalGame = games[finalGameId];
   const champion = finalGame ? finalGame.winner : null;
 
-  // Build column flex widths proportional to 1/numGamesInRound
-  const colWidths = div.columns.map(col => {
-    const gameSlots = col.slots.filter(s => s.gameId !== null);
-    return gameSlots.length;
-  });
-  const maxGames = Math.max(...colWidths);
+  // Column flex grows with round importance: earliest = 1, each step adds 0.6
+  // Championship (last col) ends up widest; Play-In narrowest but still readable
+  const numCols = div.columns.length;
+  const colFlex = i => parseFloat((1 + i * 0.6).toFixed(2));
 
-  // Build round labels row
-  let labelsHtml = div.columns.map((col, i) => {
-    const w = `flex: ${maxGames / colWidths[i]}`;
-    return `<div class="round-label-cell" style="${w}">${col.label}</div>`;
-  }).join('<div style="flex:0 0 40px"></div>') + '<div style="flex:0 0 180px"></div>';
+  // Build round labels row (flex must match columns exactly so labels align)
+  let labelsHtml = div.columns.map((col, i) =>
+    `<div class="round-label-cell" style="flex:${colFlex(i)}">${col.label}</div>`
+  ).join('<div style="flex:0 0 40px"></div>') + '<div style="flex:0 0 180px"></div>';
 
   // Build bracket body columns
   let bodyHtml = '';
   div.columns.forEach((col, colIdx) => {
-    const totalFlex = col.slots.reduce((sum, s) => sum + s.flex, 0);
+    const isChampCol = colIdx === numCols - 1;
 
     let slotsHtml = col.slots.map(slot => {
       const slotStyle = `flex: ${slot.flex}`;
@@ -90,8 +105,9 @@ function renderBracket(divKey) {
       </div>`;
     }).join('');
 
-    bodyHtml += `<div class="bracket-col" style="flex:${maxGames / colWidths[colIdx]}" data-col="${colIdx}">${slotsHtml}</div>`;
-    if (colIdx < div.columns.length - 1) {
+    const champClass = isChampCol ? ' bracket-col--championship' : '';
+    bodyHtml += `<div class="bracket-col${champClass}" style="flex:${colFlex(colIdx)}" data-col="${colIdx}">${slotsHtml}</div>`;
+    if (colIdx < numCols - 1) {
       bodyHtml += `<div class="bracket-col-spacer"></div>`;
     }
   });
@@ -113,8 +129,11 @@ function renderBracket(divKey) {
       </div>
     </div>`;
 
-  // Draw connector lines after layout
-  requestAnimationFrame(() => drawConnectors(divKey, div.connections, games));
+  // Draw connector lines and spotlight active game after layout
+  requestAnimationFrame(() => {
+    drawConnectors(divKey, div.connections, games);
+    spotlightActiveGame(divKey);
+  });
 }
 
 function drawConnectors(divKey, connections, games) {
@@ -154,11 +173,140 @@ function drawConnectors(divKey, connections, games) {
   });
 }
 
+// ─── Active Game Spotlight ────────────────────────────────────────────────────
+
+function findMostActiveGame(games) {
+  const roundPriority = { Championship: 4, Semifinal: 3, Quarterfinal: 2, 'Play-In': 1 };
+  const field = window._detectedField;
+
+  const score = g =>
+    (g.score1 !== null || g.score2 !== null) && g.winner === null ? 100 :
+    g.winner !== null ? (roundPriority[g.round] || 0) : -1;
+
+  let candidates = Object.values(games).filter(g => score(g) > 0);
+  if (field) {
+    const atField = candidates.filter(g => g.field === field);
+    if (atField.length) candidates = atField;
+  }
+  return candidates.sort((a, b) => score(b) - score(a))[0] || null;
+}
+
+function spotlightActiveGame(divKey) {
+  const games = getGames(divKey);
+  const game  = findMostActiveGame(games);
+  if (!game) return;
+
+  const card = document.querySelector(`[data-game="${game.id}"]`);
+  if (!card) return;
+
+  const scroll = card.closest('.bracket-scroll');
+  if (scroll) {
+    const cardRect   = card.getBoundingClientRect();
+    const scrollRect = scroll.getBoundingClientRect();
+    scroll.scrollLeft += cardRect.left - scrollRect.left - (scrollRect.width / 2) + (cardRect.width / 2);
+  }
+
+  document.querySelectorAll('.game-card--spotlight').forEach(el => el.classList.remove('game-card--spotlight'));
+  card.classList.add('game-card--spotlight');
+  setTimeout(() => card.classList.remove('game-card--spotlight'), 3500);
+}
+
+// ─── Score Change Detection ───────────────────────────────────────────────────
+
+function checkForScoreChanges(divKey) {
+  const newGames = getGames(divKey);
+  const old = lastKnownState[divKey];
+  const changed = [];
+  for (const id in newGames) {
+    const n = newGames[id], o = old[id];
+    if (!o) continue;
+    if (n.score1 !== o.score1 || n.score2 !== o.score2 || n.winner !== o.winner) {
+      changed.push(n);
+    }
+  }
+  lastKnownState[divKey] = JSON.parse(JSON.stringify(newGames));
+  return changed;
+}
+
+// ─── Score Alert Overlay ──────────────────────────────────────────────────────
+
+function showScoreAlert(game) {
+  const overlay = document.getElementById('score-alert');
+  if (!overlay) return;
+
+  const t1 = game.team1 || (game.team1Source ? `Winner of ${game.team1Source}` : 'Team 1');
+  const t2 = game.team2 || (game.team2Source ? `Winner of ${game.team2Source}` : 'Team 2');
+  const s1 = game.score1 !== null ? game.score1 : '–';
+  const s2 = game.score2 !== null ? game.score2 : '–';
+  const winnerLine = game.winner ? `<div class="sa-winner">🏆 ${game.winner}</div>` : '';
+
+  const confettiColors = ['#F0B429','#1B2D6B','#CC2229','#ffffff','#F4F0E6'];
+  const confettiHtml = Array.from({length: 20}, (_, i) => {
+    const color = confettiColors[i % confettiColors.length];
+    const left  = (i * 5.2 + (i % 3) * 1.4).toFixed(1);
+    const delay = ((i % 5) * 0.16).toFixed(2);
+    return `<span class="sa-confetti-piece" style="left:${left}%;background:${color};animation-delay:${delay}s"></span>`;
+  }).join('');
+
+  overlay.innerHTML = `
+    <div class="sa-card">
+      <div class="sa-label">Score Update</div>
+      <div class="sa-meta">${game.id} · ${game.field} · ${game.time}</div>
+      <div class="sa-scores">
+        <div class="sa-team ${game.winner === t1 ? 'sa-team--win' : ''}">${t1}<span>${s1}</span></div>
+        <div class="sa-vs">VS</div>
+        <div class="sa-team ${game.winner === t2 ? 'sa-team--win' : ''}">${t2}<span>${s2}</span></div>
+      </div>
+      ${winnerLine}
+      <div class="sa-dismiss">Tap to dismiss</div>
+    </div>
+    <div class="sa-confetti" aria-hidden="true">${confettiHtml}</div>`;
+
+  overlay.classList.add('sa--visible');
+  overlay.onclick = () => overlay.classList.remove('sa--visible');
+  clearTimeout(overlay._timer);
+  overlay._timer = setTimeout(() => overlay.classList.remove('sa--visible'), 6000);
+}
+
+// ─── Geolocation Field Detection ─────────────────────────────────────────────
+
+function haversineMeters(lat1, lng1, lat2, lng2) {
+  const R = 6371000, r = Math.PI / 180;
+  const dLat = (lat2 - lat1) * r, dLng = (lng2 - lng1) * r;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*r)*Math.cos(lat2*r)*Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function startFieldDetection() {
+  if (!navigator.geolocation) return;
+  const indicator = document.getElementById('field-indicator');
+
+  navigator.geolocation.watchPosition(pos => {
+    const { latitude: lat, longitude: lng } = pos.coords;
+    let nearest = null, nearestDist = Infinity;
+    for (const [name, coords] of Object.entries(FIELD_COORDS)) {
+      const d = haversineMeters(lat, lng, coords.lat, coords.lng);
+      if (d < nearestDist) { nearestDist = d; nearest = name; }
+    }
+    const detected = nearestDist <= FIELD_DETECT_RADIUS_M ? nearest : null;
+    if (detected === window._detectedField) return;
+
+    window._detectedField = detected;
+    if (indicator) {
+      indicator.textContent = detected ? `📍 ${detected}` : '';
+      indicator.classList.toggle('fi--visible', !!detected);
+    }
+    const active = document.querySelector('.division-panel.active');
+    if (active) spotlightActiveGame(active.id.replace('panel-', ''));
+
+  }, null, { enableHighAccuracy: true, maximumAge: 10000 });
+}
+
 // ─── Tab Logic ────────────────────────────────────────────────────────────────
 function switchTab(divKey) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.div === divKey));
   document.querySelectorAll('.division-panel').forEach(p => p.classList.toggle('active', p.id === `panel-${divKey}`));
-  renderBracket(divKey);
+  if (DIVISIONS[divKey]) renderBracket(divKey);
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
@@ -191,6 +339,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }, 350);
   });
+
+  startFieldDetection();
 });
 
 // Called by admin page after updates (if opened in same session)

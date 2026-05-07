@@ -4,7 +4,15 @@
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Charl\\\\Documents\\\\mygs-bracket-2026\" -Recurse -Force)",
       "Bash(Select-Object -Property FullName, Length)",
       "Bash(Sort-Object FullName)",
-      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\Charl\\\\Documents\\\\mygs-bracket-2026\" -Recurse | ForEach-Object { $_.FullName })"
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\Charl\\\\Documents\\\\mygs-bracket-2026\" -Recurse | ForEach-Object { $_.FullName })",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Charl\\\\Documents\\\\mygs-bracket-2026\" -Recurse)",
+      "Bash(Select-Object FullName)",
+      "PowerShell(Head -50)",
+      "WebSearch",
+      "WebFetch(domain:bracket2026.medfordyouthgirlssoftball.org)",
+      "WebFetch(domain:medfordyouthgirlssoftball.org)",
+      "WebFetch(domain:chuckwillwerth.github.io)",
+      "WebFetch(domain:medfordma.myrec.com)"
     ]
   }
 }

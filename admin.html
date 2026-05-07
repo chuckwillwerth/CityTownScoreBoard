@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Score Admin · City/Town Tournament 2026</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="admin-body">
+
+  <!-- ─── Login Screen ──────────────────────────────────────────────────── -->
+  <div id="login-screen" class="login-screen" style="display:none">
+    <div class="login-card">
+      <div class="login-logo">MYGS</div>
+      <div class="login-title">Score Admin</div>
+      <div class="login-subtitle">City/Town Tournament 2026<br>Enter your 4-digit PIN to continue</div>
+      <input id="pin-input" class="login-input" type="password"
+             inputmode="numeric" maxlength="6" autocomplete="off"
+             placeholder="····">
+      <button id="login-btn" class="login-btn">Sign In</button>
+      <div id="login-error" class="login-error"></div>
+    </div>
+  </div>
+
+  <!-- ─── Admin Dashboard ───────────────────────────────────────────────── -->
+  <div id="admin-dashboard" style="display:none">
+
+    <header class="admin-header">
+      <div class="admin-header-left">
+        <div class="header-logo" style="width:44px;height:44px;font-size:15px;border-radius:8px;">MYGS</div>
+        <div>
+          <div class="admin-header-title">Score Admin</div>
+          <div class="admin-header-sub">City/Town Tournament 2026 · Update results below</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <a href="index.html" style="color:rgba(255,255,255,0.6);font-size:13px;text-decoration:none;">
+          ← View Bracket
+        </a>
+        <button id="logout-btn" class="btn-logout">Sign Out</button>
+      </div>
+    </header>
+
+    <!-- How-to banner -->
+    <div style="background:#FFF8E7;border-bottom:2px solid #F0B429;padding:12px 32px;font-size:13px;color:#7A5F00;">
+      <strong>How to update a score:</strong>
+      Enter the final score in each team's box, then click <em>Set Winner</em> — or click directly on a team row to mark them as winner without scores.
+    </div>
+
+    <nav class="admin-tabs">
+      <button class="admin-tab-btn active" data-div="10U">10U Division</button>
+      <button class="admin-tab-btn" data-div="12U">12U Division</button>
+    </nav>
+
+    <main class="admin-main">
+      <div class="admin-panel active" id="admin-panel-10U"></div>
+      <div class="admin-panel"        id="admin-panel-12U"></div>
+    </main>
+
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

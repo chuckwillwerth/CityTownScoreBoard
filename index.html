@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City/Town Tournament 2026 · MYGS</title>
+  <meta name="description" content="Live bracket results for the City/Town 2026 Tournament — Medford Youth Girls Softball.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ─── Header ─────────────────────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-logo">MYGS</div>
+      <div class="header-text">
+        <div class="header-org">Medford Youth Girls Softball · Est. 1994</div>
+        <div class="header-title">City/Town Tournament 2026</div>
+        <div class="header-subtitle">Single Elimination · Tufts University Fields</div>
+      </div>
+      <div class="header-badge">Live Results</div>
+    </div>
+  </header>
+
+  <!-- ─── Tab Navigation ────────────────────────────────────────────────── -->
+  <nav class="tab-nav">
+    <div class="tab-nav-inner">
+      <button class="tab-btn active" data-div="10U">10U Division</button>
+      <button class="tab-btn" data-div="12U">12U Division</button>
+    </div>
+  </nav>
+
+  <!-- ─── Main Content ──────────────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- 10U Panel -->
+    <div class="division-panel active" id="panel-10U">
+      <div class="division-header">
+        <div class="division-tag">10U Division</div>
+        <div class="division-title">City/Town 10U Tournament 2026</div>
+      </div>
+      <div class="bracket-scroll">
+        <div id="bracket-10U"></div>
+      </div>
+    </div>
+
+    <!-- 12U Panel -->
+    <div class="division-panel" id="panel-12U">
+      <div class="division-header">
+        <div class="division-tag">12U Division</div>
+        <div class="division-title">City/Town 12U Tournament 2026</div>
+      </div>
+      <div class="bracket-scroll">
+        <div id="bracket-12U"></div>
+      </div>
+    </div>
+
+    <p class="last-updated" id="last-updated"></p>
+    <div class="admin-link-wrap">
+      <a class="admin-link" href="admin.html">Score Admin ›</a>
+    </div>
+
+  </main>
+
+  <!-- ─── Footer ────────────────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    Medford Youth Girls Softball (MYGS) · Volunteer-run since 1994 ·
+    <a href="https://www.medfordyouthgirlssoftball.org" target="_blank" rel="noopener">medfordyouthgirlssoftball.org</a>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/bracket.js"></script>
+  <script>
+    // Show last updated time
+    const keys = ['mygs_bracket_10U', 'mygs_bracket_12U'];
+    const hasData = keys.some(k => localStorage.getItem(k));
+    if (hasData) {
+      document.getElementById('last-updated').textContent = 'Results update automatically · Refresh for latest';
+    }
+
+    // Auto-refresh every 60 seconds to pick up any changes from admin device
+    setInterval(() => {
+      const active = document.querySelector('.division-panel.active');
+      if (active) {
+        const divKey = active.id.replace('panel-', '');
+        renderBracket(divKey);
+      }
+    }, 60000);
+  </script>
+</body>
+</html>

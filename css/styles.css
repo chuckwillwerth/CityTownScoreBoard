@@ -1,0 +1,879 @@
+/* ─── Variables & Reset ──────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --navy:       #1B2D6B;
+  --navy-dark:  #0F1A3D;
+  --navy-mid:   #243680;
+  --gold:       #F0B429;
+  --gold-dark:  #C89110;
+  --red:        #CC2229;
+  --cream:      #F4F0E6;
+  --cream-dark: #E8E2D6;
+  --white:      #FFFFFF;
+  --gray:       #6B7280;
+  --light:      #E5E7EB;
+  --winner-bg:  #FFF8E7;
+  --winner-border: #F0B429;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--navy-dark);
+  min-height: 100vh;
+}
+
+/* ─── Site Header ──────────────────────────────────────────────────────────── */
+.site-header {
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%);
+  color: var(--white);
+  padding: 0;
+  border-bottom: 4px solid var(--gold);
+  position: relative;
+  overflow: hidden;
+}
+
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+
+.header-logo {
+  width: 64px;
+  height: 64px;
+  background: var(--gold);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--navy-dark);
+  letter-spacing: -1px;
+  flex-shrink: 0;
+}
+
+.header-text { flex: 1; }
+
+.header-org {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.header-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--white);
+}
+
+.header-subtitle {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  margin-top: 6px;
+  font-weight: 400;
+}
+
+.header-badge {
+  background: var(--red);
+  color: var(--white);
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 4px;
+}
+
+/* ─── Tab Navigation ──────────────────────────────────────────────────────── */
+.tab-nav {
+  background: var(--navy-dark);
+  border-bottom: 3px solid var(--gold);
+}
+
+.tab-nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  gap: 0;
+}
+
+.tab-btn {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  background: none;
+  border: none;
+  padding: 16px 28px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0; right: 0;
+  height: 3px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+
+.tab-btn:hover { color: rgba(255,255,255,0.85); }
+.tab-btn.active { color: var(--white); }
+.tab-btn.active::after { transform: scaleX(1); }
+
+/* ─── Main Content ────────────────────────────────────────────────────────── */
+.main { max-width: 1400px; margin: 0 auto; padding: 40px 24px; }
+
+.division-panel { display: none; }
+.division-panel.active { display: block; }
+
+.division-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.division-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--navy);
+}
+
+.division-tag {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--navy-dark);
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+/* ─── Bracket Wrapper ─────────────────────────────────────────────────────── */
+.bracket-scroll {
+  overflow-x: auto;
+  padding-bottom: 16px;
+}
+
+.bracket-outer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 900px;
+}
+
+.round-labels {
+  display: flex;
+  padding: 0 0 12px 0;
+}
+
+.round-label-cell {
+  text-align: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+}
+
+.bracket-body {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+/* SVG overlay for connector lines */
+.bracket-svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* ─── Bracket Columns ─────────────────────────────────────────────────────── */
+.bracket-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  flex: 1;
+}
+
+.bracket-col-spacer {
+  min-width: 40px;
+  flex: 0 0 40px;
+}
+
+.bracket-slot {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px 8px 0;
+}
+
+.bracket-slot.empty {
+  /* spacer slot with no game */
+}
+
+/* ─── Game Card ───────────────────────────────────────────────────────────── */
+.game-card {
+  background: var(--white);
+  border: 2px solid var(--cream-dark);
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(27,45,107,0.08);
+  transition: box-shadow 0.2s, border-color 0.2s;
+  position: relative;
+}
+
+.game-card:hover {
+  box-shadow: 0 4px 16px rgba(27,45,107,0.14);
+}
+
+.game-card.championship {
+  border-color: var(--gold);
+  box-shadow: 0 4px 20px rgba(240,180,41,0.25);
+}
+
+.game-card-header {
+  background: var(--navy);
+  padding: 5px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.game-card-header.championship-header { background: var(--gold-dark); }
+
+.game-id {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+}
+
+.game-card-header.championship-header .game-id { color: var(--navy-dark); }
+
+.game-time {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: 0.5px;
+}
+
+.game-card-header.championship-header .game-time { color: rgba(15,26,61,0.7); }
+
+.game-field {
+  font-size: 9px;
+  color: rgba(255,255,255,0.45);
+  padding: 2px 10px 4px;
+  background: var(--navy-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.game-card.championship .game-field { background: var(--navy); }
+
+.game-teams {
+  display: flex;
+  flex-direction: column;
+}
+
+.team-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  gap: 8px;
+  border-bottom: 1px solid var(--cream-dark);
+  min-height: 40px;
+  transition: background 0.15s;
+}
+
+.team-row:last-child { border-bottom: none; }
+
+.team-row.winner-row {
+  background: var(--winner-bg);
+}
+
+.team-row.loser-row {
+  opacity: 0.5;
+}
+
+.team-name {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy-dark);
+  line-height: 1.2;
+}
+
+.team-name.tbd {
+  color: var(--gray);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.team-score {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  min-width: 24px;
+  text-align: right;
+}
+
+.team-score.winner-score { color: var(--gold-dark); }
+
+.winner-crown {
+  font-size: 12px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.team-row.winner-row .winner-crown { opacity: 1; }
+
+/* ─── Champion Display ────────────────────────────────────────────────────── */
+.champion-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 0 16px;
+  min-width: 180px;
+}
+
+.champion-trophy {
+  font-size: 48px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 2px 8px rgba(240,180,41,0.5));
+}
+
+.champion-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: 8px;
+}
+
+.champion-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.champion-name.empty {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--gray);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ─── Footer ──────────────────────────────────────────────────────────────── */
+.site-footer {
+  background: var(--navy-dark);
+  color: rgba(255,255,255,0.45);
+  text-align: center;
+  padding: 20px;
+  font-size: 12px;
+  margin-top: 60px;
+  border-top: 3px solid var(--navy);
+}
+
+.site-footer a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.site-footer a:hover { text-decoration: underline; }
+
+/* ─── Last Updated ────────────────────────────────────────────────────────── */
+.last-updated {
+  text-align: center;
+  font-size: 12px;
+  color: var(--gray);
+  margin-top: 24px;
+}
+
+/* ─── Admin Link ──────────────────────────────────────────────────────────── */
+.admin-link-wrap {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.admin-link {
+  font-size: 12px;
+  color: var(--gray);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.admin-link:hover { opacity: 1; }
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ADMIN PAGE STYLES
+══════════════════════════════════════════════════════════════════════════════ */
+.admin-body {
+  background: var(--cream);
+  min-height: 100vh;
+}
+
+/* ─── Login Screen ─────────────────────────────────────────────────────────── */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+  padding: 24px;
+}
+
+.login-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.login-logo {
+  width: 72px;
+  height: 72px;
+  background: var(--gold);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--navy-dark);
+  margin: 0 auto 20px;
+}
+
+.login-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.login-subtitle {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 32px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 22px;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 8px;
+  text-align: center;
+  border: 2px solid var(--cream-dark);
+  border-radius: 8px;
+  color: var(--navy-dark);
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 16px;
+}
+
+.login-input:focus { border-color: var(--gold); }
+.login-input.error { border-color: var(--red); }
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--navy);
+  color: var(--white);
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.login-btn:hover { background: var(--navy-mid); }
+
+.login-error {
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 12px;
+  min-height: 20px;
+}
+
+/* ─── Admin Dashboard ─────────────────────────────────────────────────────── */
+.admin-header {
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+  border-bottom: 4px solid var(--gold);
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-header-left { display: flex; align-items: center; gap: 16px; }
+
+.admin-header-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.admin-header-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 2px;
+}
+
+.btn-logout {
+  background: rgba(255,255,255,0.1);
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-logout:hover { background: rgba(255,255,255,0.2); }
+
+/* ─── Admin Tabs ───────────────────────────────────────────────────────────── */
+.admin-tabs {
+  background: var(--navy-dark);
+  border-bottom: 2px solid var(--navy);
+  padding: 0 32px;
+  display: flex;
+  gap: 0;
+}
+
+.admin-tab-btn {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  background: none;
+  border: none;
+  padding: 14px 24px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.admin-tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+
+.admin-tab-btn:hover { color: rgba(255,255,255,0.8); }
+.admin-tab-btn.active { color: var(--white); }
+.admin-tab-btn.active::after { transform: scaleX(1); }
+
+/* ─── Admin Content ────────────────────────────────────────────────────────── */
+.admin-main { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+
+.admin-panel { display: none; }
+.admin-panel.active { display: block; }
+
+.admin-section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--cream-dark);
+  margin-bottom: 16px;
+  margin-top: 32px;
+}
+
+.admin-section-title:first-child { margin-top: 0; }
+
+/* ─── Admin Game Card ─────────────────────────────────────────────────────── */
+.admin-game-list { display: flex; flex-direction: column; gap: 12px; }
+
+.admin-game-card {
+  background: var(--white);
+  border: 2px solid var(--cream-dark);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-game-card.complete { border-color: var(--gold); }
+
+.admin-game-card-header {
+  background: var(--navy);
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-game-id {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--gold);
+}
+
+.admin-game-meta {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+}
+
+.admin-game-body { padding: 12px 16px; }
+
+.admin-team-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.admin-team-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: var(--cream);
+  border: 2px solid transparent;
+  transition: border-color 0.15s, background 0.15s;
+  cursor: pointer;
+}
+
+.admin-team-row:hover { background: var(--winner-bg); border-color: var(--gold); }
+
+.admin-team-row.is-winner {
+  background: var(--winner-bg);
+  border-color: var(--gold);
+}
+
+.admin-team-label {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy-dark);
+}
+
+.admin-team-label.tbd {
+  color: var(--gray);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.score-input {
+  width: 56px;
+  padding: 5px 8px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  border: 2px solid var(--cream-dark);
+  border-radius: 6px;
+  color: var(--navy);
+  outline: none;
+  transition: border-color 0.2s;
+  background: var(--white);
+}
+
+.score-input:focus { border-color: var(--navy); }
+
+.admin-team-row.is-winner .score-input { border-color: var(--gold); color: var(--gold-dark); }
+
+.winner-indicator {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.admin-game-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-set-winner {
+  flex: 1;
+  padding: 9px 16px;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-set-winner:hover { background: var(--navy-mid); }
+
+.btn-clear-game {
+  padding: 9px 14px;
+  background: none;
+  color: var(--gray);
+  border: 2px solid var(--cream-dark);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-clear-game:hover { border-color: var(--red); color: var(--red); }
+
+/* ─── Reset Section ────────────────────────────────────────────────────────── */
+.reset-zone {
+  margin-top: 40px;
+  padding: 20px 24px;
+  border: 2px dashed var(--cream-dark);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.reset-zone p {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 12px;
+}
+
+.btn-reset {
+  background: none;
+  color: var(--red);
+  border: 2px solid var(--red);
+  border-radius: 6px;
+  padding: 9px 20px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reset:hover { background: var(--red); color: var(--white); }
+
+/* ─── Toast notification ───────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--navy-dark);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  border-left: 4px solid var(--gold);
+  transform: translateY(80px);
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ─── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .header-inner { padding: 16px 20px; gap: 14px; }
+  .header-title { font-size: 22px; }
+  .header-logo { width: 48px; height: 48px; font-size: 16px; }
+  .header-badge { display: none; }
+  .tab-nav-inner { padding: 0 16px; }
+  .main { padding: 24px 16px; }
+  .bracket-col { min-width: 160px; }
+  .admin-header { padding: 16px 20px; flex-wrap: wrap; }
+  .admin-main { padding: 20px 16px; }
+}
+
+@media (max-width: 480px) {
+  .header-title { font-size: 18px; }
+  .tab-btn { padding: 14px 16px; font-size: 13px; letter-spacing: 1px; }
+}

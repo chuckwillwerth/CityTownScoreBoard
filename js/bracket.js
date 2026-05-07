@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial render
   switchTab('10U');
 
-  // Re-draw SVG lines on window resize
+  // Re-draw SVG lines on resize and orientation change
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -180,6 +180,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (panel && panel.classList.contains('active')) renderBracket(d);
       });
     }, 150);
+  });
+  // 350ms delay gives iOS time to finalize viewport dimensions after rotation
+  window.addEventListener('orientationchange', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      ['10U', '12U'].forEach(d => {
+        const panel = document.getElementById(`panel-${d}`);
+        if (panel && panel.classList.contains('active')) renderBracket(d);
+      });
+    }, 350);
   });
 });
 

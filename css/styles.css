@@ -301,7 +301,7 @@ body {
 .game-time {
   font-size: 10px;
   font-weight: 500;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,255,255,0.9);
   letter-spacing: 0.5px;
 }
 
@@ -309,7 +309,7 @@ body {
 
 .game-field {
   font-size: 9px;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.9);
   padding: 2px 10px 4px;
   background: var(--navy-dark);
   text-transform: uppercase;
@@ -876,4 +876,72 @@ body {
 @media (max-width: 480px) {
   .header-title { font-size: 18px; }
   .tab-btn { padding: 14px 16px; font-size: 13px; letter-spacing: 1px; }
+}
+
+/* ─── Mobile Landscape ────────────────────────────────────────────────────── */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* Header: collapse to ~50px single-line strip */
+  .header-inner    { padding: 8px 16px; gap: 10px; }
+  .header-logo     { width: 34px; height: 34px; font-size: 12px; border-radius: 6px; }
+  .header-title    { font-size: 15px; letter-spacing: 0.5px; }
+  .header-org      { display: none; }
+  .header-subtitle { display: none; }
+  .header-badge    { display: none; }
+
+  /* Tab nav: slim to ~40px */
+  .tab-nav-inner { padding: 0 12px; }
+  .tab-btn       { padding: 10px 16px; font-size: 13px; letter-spacing: 1px; }
+
+  /* Main: strip padding, hide redundant division header */
+  .main            { padding: 10px 12px 20px; }
+  .division-header { display: none; }
+  .bracket-scroll  { padding-bottom: 8px; }
+
+  /* Bracket columns: narrower + tighter slot spacing */
+  .bracket-col        { min-width: 150px; }
+  .bracket-col-spacer { min-width: 24px; flex: 0 0 24px; }
+  .bracket-slot       { padding: 4px 8px 4px 0; }
+
+  /* Round labels: smaller */
+  .round-labels     { padding: 0 0 6px 0; }
+  .round-label-cell { font-size: 9px; letter-spacing: 2px; }
+
+  /* Game cards: dense mode */
+  .game-card-header { padding: 3px 8px; }
+  .game-id          { font-size: 10px; letter-spacing: 1px; }
+  .game-time        { font-size: 9px; }
+  .game-field       { padding: 1px 8px 2px; font-size: 8px; }
+  .team-row         { padding: 6px 8px; gap: 6px; min-height: 44px; }
+  .team-name        { font-size: 11px; }
+  .team-score       { font-size: 15px; min-width: 20px; }
+  .winner-crown     { font-size: 10px; }
+
+  /* Champion display: compact */
+  .champion-display    { min-width: 130px; padding: 0 0 0 10px; }
+  .champion-trophy     { font-size: 28px; margin-bottom: 4px; }
+  .champion-label      { font-size: 9px; letter-spacing: 2px; margin-bottom: 4px; }
+  .champion-name       { font-size: 14px; }
+  .champion-name.empty { font-size: 11px; }
+
+  /* Admin header: collapse to ~50px */
+  .admin-header       { padding: 8px 16px; }
+  .admin-header-title { font-size: 15px; }
+  .admin-header-sub   { display: none; }
+  .admin-tabs         { padding: 0 12px; }
+  .admin-tab-btn      { padding: 8px 16px; font-size: 12px; letter-spacing: 1.5px; }
+  .admin-main         { padding: 10px 12px 24px; }
+
+  /* How-to banner: hidden in landscape (redundant on small screen) */
+  .howto-banner { display: none; }
+
+  /* Login screen: scrollable + compressed */
+  .login-screen   { align-items: flex-start; padding: 16px 24px; overflow-y: auto; }
+  .login-card     { padding: 24px 28px; margin: 0 auto; }
+  .login-logo     { width: 44px; height: 44px; font-size: 18px; border-radius: 10px; margin-bottom: 12px; }
+  .login-title    { font-size: 18px; margin-bottom: 4px; }
+  .login-subtitle { font-size: 12px; margin-bottom: 16px; }
+  .login-input    { padding: 10px 12px; font-size: 18px; margin-bottom: 10px; }
+  .login-btn      { padding: 10px; font-size: 14px; }
+
 }

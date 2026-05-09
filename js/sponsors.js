@@ -19,7 +19,7 @@
 
 const SPONSORS = [
   { name: 'Suffolk Construction', level: 'Flagship', logo: 'images/sponsors/Suffolk.png', url: 'https://suffolk.com/' },
-  { name: 'Tufts University', level: 'Gold', logo: 'images/sponsors/Tufts.jpg', url: 'https://www.tufts.edu/' },
+  { name: 'Tufts University', level: 'Gold', logo: 'images/sponsors/Tufts.jpg', url: 'https://ceeo.tufts.edu/' },
   { name: 'Boston Physical Therapy & Welness', level: 'Silver', logo: 'images/sponsors/Boston PT.jpg', url: 'https://bostonptwellness.com/' },
   { name: 'Cataldo Ambulance', level: 'Bronze', logo: 'images/sponsors/Cataldo.jpg', url: 'https://cataldoambulance.com' },
   { name: 'Chevalier Theater', level: 'Bronze', logo: 'images/sponsors/Chevalier.jpg', url: 'https://www.chevaliertheatre.com/' },

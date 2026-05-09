@@ -95,45 +95,75 @@ const DIVISIONS = {
   },
 };
 
+// ─── Firebase Configuration ───────────────────────────────────────────────────
+// Replace ALL values below with your Firebase project config.
+// Firebase Console → Project Settings → Your apps → Firebase SDK snippet (Config)
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBpV_gXgC5k1axB4DVL0PLC6oGUri3Wb90",
+  authDomain: "mygs-bracket-data.firebaseapp.com",
+  databaseURL: "https://mygs-bracket-data-default-rtdb.firebaseio.com",
+  projectId: "mygs-bracket-data",
+  storageBucket: "mygs-bracket-data.firebasestorage.app",
+  messagingSenderId: "159915207483",
+  appId: "1:159915207483:web:1d23b4aaf7b8743ce6251e",
+  measurementId: "G-1LXDJ249V6"
+};
+
+firebase.initializeApp(FIREBASE_CONFIG);
+const _db = firebase.database();
+
 // ─── Persistence ─────────────────────────────────────────────────────────────
-function storageKey(div) { return `mygs_bracket_${div}`; }
+// In-memory cache keeps all callers (bracket.js, admin.js) synchronous.
+const _cache = { '10U': null, '12U': null };
 
-function loadState(div) {
-  try {
-    const raw = localStorage.getItem(storageKey(div));
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch { return null; }
+function _dbRef(div) {
+  return _db.ref('bracket/' + div);
 }
 
-function saveState(div, gamesState) {
-  localStorage.setItem(storageKey(div), JSON.stringify(gamesState));
-}
-
-// Returns a merged game map: default data + any saved overrides
-function getGames(div) {
-  const saved = loadState(div);
-  const defaults = DIVISIONS[div].games;
-  if (!saved) return JSON.parse(JSON.stringify(defaults));
-  // Merge: keep structure from defaults, overlay saved scores/winner
-  const merged = JSON.parse(JSON.stringify(defaults));
+function _buildMerged(div, saved) {
+  const merged = JSON.parse(JSON.stringify(DIVISIONS[div].games));
   for (const id in saved) {
     if (merged[id]) {
-      merged[id].score1  = saved[id].score1  ?? null;
-      merged[id].score2  = saved[id].score2  ?? null;
-      merged[id].winner  = saved[id].winner  ?? null;
+      merged[id].score1 = saved[id].score1 ?? null;
+      merged[id].score2 = saved[id].score2 ?? null;
+      merged[id].winner = saved[id].winner ?? null;
     }
   }
   return merged;
 }
 
+// One-shot read: populates cache for both divisions. Returns a Promise.
+// Used by the admin page so it has fresh data before rendering.
+function initFirebase() {
+  return Promise.all(['10U', '12U'].map(div =>
+    _dbRef(div).once('value').then(snap => {
+      _cache[div] = _buildMerged(div, snap.val() || {});
+    })
+  ));
+}
+
+// Real-time listener: fires immediately with current data, then on every change.
+// Used by the public page instead of the old 60-second polling.
+function watchDivision(div, callback) {
+  _dbRef(div).on('value', snap => {
+    _cache[div] = _buildMerged(div, snap.val() || {});
+    if (callback) callback();
+  });
+}
+
+// Returns a merged game map from cache (falls back to defaults if not yet loaded).
+function getGames(div) {
+  if (_cache[div]) return JSON.parse(JSON.stringify(_cache[div]));
+  return JSON.parse(JSON.stringify(DIVISIONS[div].games));
+}
+
 function persistGames(div, games) {
-  // Only save the mutable fields
   const slim = {};
   for (const id in games) {
     slim[id] = { score1: games[id].score1, score2: games[id].score2, winner: games[id].winner };
   }
-  saveState(div, slim);
+  _cache[div] = JSON.parse(JSON.stringify(games));
+  _dbRef(div).set(slim);
 }
 
 // Resolve team name: check teamXSource chain
@@ -151,5 +181,6 @@ function resolveTeam(games, gameId, slot) {
 }
 
 function resetAll(div) {
-  localStorage.removeItem(storageKey(div));
+  _cache[div] = null;
+  _dbRef(div).remove();
 }

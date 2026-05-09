@@ -244,7 +244,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function attemptLogin() {
     const pin = pinInput.value.trim();
     if (login(pin)) {
-      showDashboard();
+      loginBtn.textContent = 'Loading…';
+      loginBtn.disabled = true;
+      initFirebase().then(() => showDashboard());
     } else {
       loginError.textContent = 'Incorrect PIN. Please try again.';
       pinInput.classList.add('error');
@@ -267,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Check existing session
   if (isAuthed()) {
-    showDashboard();
+    initFirebase().then(() => showDashboard());
   } else {
     showLogin();
     pinInput.focus();

@@ -12,7 +12,9 @@
       "WebFetch(domain:bracket2026.medfordyouthgirlssoftball.org)",
       "WebFetch(domain:medfordyouthgirlssoftball.org)",
       "WebFetch(domain:chuckwillwerth.github.io)",
-      "WebFetch(domain:medfordma.myrec.com)"
+      "WebFetch(domain:medfordma.myrec.com)",
+      "Bash(Get-ChildItem -Recurse -Force)",
+      "Bash(git config *)"
     ]
   }
 }

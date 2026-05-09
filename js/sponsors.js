@@ -18,14 +18,12 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 const SPONSORS = [
-  { name: 'Suffolk Construction', level: 'Flagship', logo: 'images/sponsors/Suffolk.png', url: 'https://suffolk.com/' },
-  { name: 'Tufts University', level: 'Gold', logo: 'images/sponsors/Tufts.jpg', url: 'https://ceeo.tufts.edu/' },
-  { name: 'Boston Physical Therapy & Welness', level: 'Silver', logo: 'images/sponsors/Boston PT.jpg', url: 'https://bostonptwellness.com/' },
-  { name: 'Cataldo Ambulance', level: 'Bronze', logo: 'images/sponsors/Cataldo.jpg', url: 'https://cataldoambulance.com' },
-  { name: 'Chevalier Theater', level: 'Bronze', logo: 'images/sponsors/Chevalier.jpg', url: 'https://www.chevaliertheatre.com/' },
-  { name: 'Colette Bakery', level: 'Bronze', logo: 'images/sponsors/Colette.jpg', url: 'http://colettebakery.com' },
-  { name: 'Intoppa Painting', level: 'Bronze', logo: 'images/sponsors/Intoppa.jpg', url: 'http://www.intoppa.com/' },
-  { name: 'Pompeo & Sons Insurance', level: 'Bronze', logo: 'images/sponsors/Pompeo.jpg', url: 'https://www.pompeoinsurance.com/' },
+  { name: 'Suffolk Construction', level: 'Title Sponsor', logo: 'images/sponsors/Suffolk.png', url: 'https://suffolk.com/' },
+  { name: 'Tufts University School of Engineering Center for Engineering Education and Outreach', level: 'Title Sponsor', logo: 'images/sponsors/Tufts.jpg', url: 'https://ceeo.tufts.edu/' },
+  { name: 'Boston Physical Therapy & Wellness', level: 'Field Sponsor', logo: 'images/sponsors/Boston PT.jpg', url: 'https://bostonptwellness.com/' },
+  { name: 'Cataldo Ambulance', level: 'Community Sponsor', logo: 'images/sponsors/Cataldo.jpg', url: 'https://cataldoambulance.com' },
+  { name: 'Chevalier Theater', level: 'Community Sponsor', logo: 'images/sponsors/Chevalier.jpg', url: 'https://www.chevaliertheatre.com/' },
+  { name: 'Colette Bakery', level: 'Community Sponsor', logo: 'images/sponsors/Colette.jpg', url: 'http://colettebakery.com' },
   
 ];
 

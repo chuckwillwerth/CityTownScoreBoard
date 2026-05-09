@@ -99,27 +99,32 @@
   <!-- Score alert overlay — shown on new score via JS -->
   <div id="score-alert" class="score-alert" role="alert" aria-live="assertive"></div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script src="js/data.js"></script>
   <script src="js/bracket.js"></script>
   <script src="js/sponsors.js"></script>
   <script>
-    // Show last updated time
-    const keys = ['mygs_bracket_10U', 'mygs_bracket_12U'];
-    const hasData = keys.some(k => localStorage.getItem(k));
-    if (hasData) {
-      document.getElementById('last-updated').textContent = 'Results update automatically · Refresh for latest';
+    // Track which divisions have received their first Firebase snapshot so we
+    // don't fire false score-change alerts on initial page load.
+    const _firstLoad = { '10U': true, '12U': true };
+
+    function _onDivisionUpdate(div) {
+      if (_firstLoad[div]) {
+        _firstLoad[div] = false;
+        // Sync baseline to real data so the first diff compares correctly.
+        lastKnownState[div] = JSON.parse(JSON.stringify(getGames(div)));
+        document.getElementById('last-updated').textContent = 'Results update in real-time';
+      } else {
+        const changed = checkForScoreChanges(div);
+        if (changed.length) showScoreAlert(changed[0]);
+      }
+      const panel = document.getElementById('panel-' + div);
+      if (panel && panel.classList.contains('active')) renderBracket(div);
     }
 
-    // Auto-refresh every 60 seconds; diff for score changes first
-    setInterval(() => {
-      const active = document.querySelector('.division-panel.active');
-      if (!active) return;
-      const divKey = active.id.replace('panel-', '');
-      if (!DIVISIONS[divKey]) return; // skip non-bracket tabs
-      const changed = checkForScoreChanges(divKey);
-      if (changed.length) showScoreAlert(changed[0]);
-      renderBracket(divKey);
-    }, 60000);
+    watchDivision('10U', () => _onDivisionUpdate('10U'));
+    watchDivision('12U', () => _onDivisionUpdate('12U'));
   </script>
 </body>
 </html>

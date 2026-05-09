@@ -73,10 +73,12 @@ function renderBracket(divKey) {
   const numCols = div.columns.length;
   const colFlex = i => parseFloat((1 + i * 0.6).toFixed(2));
 
-  // Build round labels row (flex must match columns exactly so labels align)
-  let labelsHtml = div.columns.map((col, i) =>
-    `<div class="round-label-cell" style="flex:${colFlex(i)}">${col.label}</div>`
-  ).join('<div style="flex:0 0 40px"></div>') + '<div style="flex:0 0 180px"></div>';
+  // Build round labels row (flex AND min-width must match columns exactly so labels align)
+  let labelsHtml = div.columns.map((col, i) => {
+    const isChampCol = i === numCols - 1;
+    const minW = isChampCol ? '260px' : '210px';
+    return `<div class="round-label-cell" style="flex:${colFlex(i)};min-width:${minW}">${col.label}</div>`;
+  }).join('<div style="flex:0 0 40px"></div>') + '<div style="flex:0 0 180px"></div>';
 
   // Build bracket body columns
   let bodyHtml = '';

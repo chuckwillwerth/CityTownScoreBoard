@@ -1,17 +1,5 @@
 // ─── Bracket Renderer (index.html) ──────────────────────────────────────────
 
-// GPS coordinates for each field at Tufts Park, 437 Main St, Medford MA.
-// Verify/update these by dropping pins in Google Maps satellite view on the park,
-// or by walking to each field and reading navigator.geolocation on a phone.
-const FIELD_COORDS = {
-  'Tufts Parking Lot Field': { lat: 42.4078, lng: -71.1158 }, // near Granville Ave parking lot
-  'Tufts Pool Field':        { lat: 42.4092, lng: -71.1148 }, // near pool, north of playground field
-  'Tufts Playground Field':  { lat: 42.4085, lng: -71.1152 }, // adjacent to playground
-};
-const FIELD_DETECT_RADIUS_M = 120;
-
-window._detectedField = null;
-
 // Snapshot at load time so the 60s diff has a baseline
 const lastKnownState = {
   '10U': JSON.parse(JSON.stringify(getGames('10U'))),
@@ -177,18 +165,14 @@ function drawConnectors(divKey, connections, games) {
 
 function findMostActiveGame(games) {
   const roundPriority = { Championship: 4, Semifinal: 3, Quarterfinal: 2, 'Play-In': 1 };
-  const field = window._detectedField;
 
   const score = g =>
     (g.score1 !== null || g.score2 !== null) && g.winner === null ? 100 :
     g.winner !== null ? (roundPriority[g.round] || 0) : -1;
 
-  let candidates = Object.values(games).filter(g => score(g) > 0);
-  if (field) {
-    const atField = candidates.filter(g => g.field === field);
-    if (atField.length) candidates = atField;
-  }
-  return candidates.sort((a, b) => score(b) - score(a))[0] || null;
+  return Object.values(games)
+    .filter(g => score(g) > 0)
+    .sort((a, b) => score(b) - score(a))[0] || null;
 }
 
 function spotlightActiveGame(divKey) {
@@ -270,38 +254,6 @@ function showScoreAlert(game) {
 
 // ─── Geolocation Field Detection ─────────────────────────────────────────────
 
-function haversineMeters(lat1, lng1, lat2, lng2) {
-  const R = 6371000, r = Math.PI / 180;
-  const dLat = (lat2 - lat1) * r, dLng = (lng2 - lng1) * r;
-  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*r)*Math.cos(lat2*r)*Math.sin(dLng/2)**2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-}
-
-function startFieldDetection() {
-  if (!navigator.geolocation) return;
-  const indicator = document.getElementById('field-indicator');
-
-  navigator.geolocation.watchPosition(pos => {
-    const { latitude: lat, longitude: lng } = pos.coords;
-    let nearest = null, nearestDist = Infinity;
-    for (const [name, coords] of Object.entries(FIELD_COORDS)) {
-      const d = haversineMeters(lat, lng, coords.lat, coords.lng);
-      if (d < nearestDist) { nearestDist = d; nearest = name; }
-    }
-    const detected = nearestDist <= FIELD_DETECT_RADIUS_M ? nearest : null;
-    if (detected === window._detectedField) return;
-
-    window._detectedField = detected;
-    if (indicator) {
-      indicator.textContent = detected ? `📍 ${detected}` : '';
-      indicator.classList.toggle('fi--visible', !!detected);
-    }
-    const active = document.querySelector('.division-panel.active');
-    if (active) spotlightActiveGame(active.id.replace('panel-', ''));
-
-  }, null, { enableHighAccuracy: true, maximumAge: 10000 });
-}
-
 // ─── Tab Logic ────────────────────────────────────────────────────────────────
 function switchTab(divKey) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.div === divKey));
@@ -340,7 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 350);
   });
 
-  startFieldDetection();
 });
 
 // Called by admin page after updates (if opened in same session)

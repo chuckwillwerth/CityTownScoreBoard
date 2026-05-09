@@ -19,10 +19,22 @@
 
 const SPONSORS = [
   { name: 'Suffolk Construction', level: 'Flagship', logo: 'images/sponsors/Suffolk.png', url: 'https://suffolk.com/' },
+  { name: 'Tufts University', level: 'Gold', logo: 'images/sponsors/Tufts.jpg', url: 'https://www.tufts.edu/' },
+  { name: 'Boston Physical Therapy & Welness', level: 'Silver', logo: 'images/sponsors/Boston PT.jpg', url: 'https://bostonptwellness.com/' },
+  { name: 'Cataldo Ambulance', level: 'Bronze', logo: 'images/sponsors/Cataldo.jpg', url: 'https://www.cataldoambulance.com' },
+  { name: 'Chevalier Theater', level: 'Bronze', logo: 'images/sponsors/Chevalier.jpg', url: 'https://www.chevaliertheater.com/' },
+  { name: 'Colette Bakery', level: 'Bronze', logo: 'images/sponsors/Colette.jpg', url: 'http://colettebakery.com' },
+  { name: 'Intoppa Painting', level: 'Bronze', logo: 'images/sponsors/Intoppa.jpg', url: 'https://www.intoppa.com/' },
+  { name: 'Pompeo & Sons Insurance', level: 'Bronze', logo: 'images/sponsors/Pompeo.jpg', url: 'https://www.pompeoinsurance.com/' },
+  
 ];
 
 const VENDORS = [
   { name: 'Wally\'s Waffles', description: 'Food Truck', logo: 'images/sponsors/11_AllBelgiumLogo-1289777767.jpg', url: 'https://allbelgiumwaffles.com/find-willys-waffle-trucks/boston-waffle-food-truck/' },
+  { name: 'Ace of Diamonds', description: 'Softball Mini-Clinics', logo: 'images/sponsors/Ace of Diamonds.jpg', url: 'https://www.theacema.com' },
+  { name: 'Kona Ice', description: 'Food Truck', logo: 'images/sponsors/Kona Ice.jpg', url: 'https://www.kona-ice.com/' },
+  { name: 'Crafty Divas', description: 'Face Painting', logo: 'images/sponsors/Crafty Divas.jpg', url: 'https://www.instagram.com/craftydivasparties/' },
+
 ];
 
 // ─── Rendering ───────────────────────────────────────────────────────────────

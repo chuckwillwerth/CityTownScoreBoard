@@ -880,7 +880,9 @@ body {
 
 @media (max-width: 480px) {
   .header-title { font-size: 18px; }
-  .tab-btn { padding: 14px 16px; font-size: 13px; letter-spacing: 1px; }
+  .tab-nav { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tab-nav-inner { padding: 0 8px; width: max-content; }
+  .tab-btn { padding: 14px 14px; font-size: 13px; letter-spacing: 1px; flex-shrink: 0; white-space: nowrap; }
 }
 
 /* ─── Mobile Landscape ────────────────────────────────────────────────────── */
@@ -1066,30 +1068,6 @@ body {
   border-color: var(--gold) !important;
   z-index: 2;
   position: relative;
-}
-
-/* ─── Field Indicator ─────────────────────────────────────────────────────── */
-@keyframes fi-pop {
-  0%   { transform: scale(0.8); opacity: 0; }
-  100% { transform: scale(1);   opacity: 1; }
-}
-.field-indicator {
-  display: none;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--navy);
-  background: var(--winner-bg);
-  border: 1.5px solid var(--gold);
-  border-radius: 20px;
-  padding: 6px 16px;
-  margin: 0 auto 16px;
-  width: fit-content;
-  letter-spacing: 0.3px;
-}
-.field-indicator.fi--visible {
-  display: block;
-  animation: fi-pop 0.3s ease-out;
 }
 
 /* ─── Score Alert Overlay ─────────────────────────────────────────────────── */

@@ -5,8 +5,8 @@
   --navy:       #1B2D6B;
   --navy-dark:  #0F1A3D;
   --navy-mid:   #243680;
-  --gold:       #F0B429;
-  --gold-dark:  #C89110;
+  --lightblue: #99ccff;
+  --lightblue-dark: #305CDE;
   --red:        #CC2229;
   --cream:      #F4F0E6;
   --cream-dark: #E8E2D6;
@@ -14,7 +14,7 @@
   --gray:       #6B7280;
   --light:      #E5E7EB;
   --winner-bg:  #FFF8E7;
-  --winner-border: #F0B429;
+  --winner-border: #305CDE;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,7 +33,7 @@ body {
   background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-mid) 100%);
   color: var(--white);
   padding: 0;
-  border-bottom: 4px solid var(--gold);
+  border-bottom: 4px solid var(--lightblue);
   position: relative;
   overflow: hidden;
 }
@@ -59,7 +59,7 @@ body {
 .header-logo {
   width: 64px;
   height: 64px;
-  background: var(--gold);
+  background: var(--lightblue);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -80,7 +80,7 @@ body {
   font-weight: 500;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--lightblue);
   margin-bottom: 4px;
 }
 
@@ -116,7 +116,7 @@ body {
 /* ─── Tab Navigation ──────────────────────────────────────────────────────── */
 .tab-nav {
   background: var(--navy-dark);
-  border-bottom: 3px solid var(--gold);
+  border-bottom: 3px solid var(--lightblue);
 }
 
 .tab-nav-inner {
@@ -148,7 +148,7 @@ body {
   bottom: -3px;
   left: 0; right: 0;
   height: 3px;
-  background: var(--gold);
+  background: var(--lightblue);
   transform: scaleX(0);
   transition: transform 0.2s;
 }
@@ -179,7 +179,7 @@ body {
 
 .division-tag {
   display: inline-block;
-  background: var(--gold);
+  background: var(--lightblue);
   color: var(--navy-dark);
   font-family: 'Oswald', sans-serif;
   font-size: 11px;
@@ -216,7 +216,7 @@ body {
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--gold-dark);
+  color: var(--lightblue-dark);
 }
 
 .bracket-body {
@@ -278,7 +278,7 @@ body {
 }
 
 .game-card.championship {
-  border-color: var(--gold);
+  border-color: var(--lightblue);
   box-shadow: 0 4px 20px rgba(240,180,41,0.25);
 }
 
@@ -290,14 +290,14 @@ body {
   align-items: center;
 }
 
-.game-card-header.championship-header { background: var(--gold-dark); }
+.game-card-header.championship-header { background: var(--lightblue-dark); }
 
 .game-id {
   font-family: 'Oswald', sans-serif;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1.5px;
-  color: var(--gold);
+  color: var(--lightblue);
 }
 
 .game-card-header.championship-header .game-id { color: var(--navy-dark); }
@@ -370,7 +370,7 @@ body {
   text-align: right;
 }
 
-.team-score.winner-score { color: var(--gold-dark); }
+.team-score.winner-score { color: var(--lightblue-dark); }
 
 .winner-crown {
   font-size: 12px;
@@ -403,7 +403,7 @@ body {
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--gold-dark);
+  color: var(--lightblue-dark);
   margin-bottom: 8px;
 }
 
@@ -439,7 +439,7 @@ body {
 }
 
 .site-footer a {
-  color: var(--gold);
+  color: var(--lightblue);
   text-decoration: none;
 }
 
@@ -500,7 +500,7 @@ body {
 .login-logo {
   width: 72px;
   height: 72px;
-  background: var(--gold);
+  background: var(--lightblue);
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -543,7 +543,7 @@ body {
   margin-bottom: 16px;
 }
 
-.login-input:focus { border-color: var(--gold); }
+.login-input:focus { border-color: var(--lightblue); }
 .login-input.error { border-color: var(--red); }
 
 .login-btn {
@@ -574,7 +574,7 @@ body {
 /* ─── Admin Dashboard ─────────────────────────────────────────────────────── */
 .admin-header {
   background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
-  border-bottom: 4px solid var(--gold);
+  border-bottom: 4px solid var(--lightblue);
   padding: 20px 32px;
   display: flex;
   align-items: center;
@@ -642,7 +642,7 @@ body {
   position: absolute;
   bottom: -2px; left: 0; right: 0;
   height: 2px;
-  background: var(--gold);
+  background: var(--lightblue);
   transform: scaleX(0);
   transition: transform 0.2s;
 }
@@ -663,7 +663,7 @@ body {
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--gold-dark);
+  color: var(--lightblue-dark);
   padding-bottom: 8px;
   border-bottom: 1px solid var(--cream-dark);
   margin-bottom: 16px;
@@ -683,7 +683,7 @@ body {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.admin-game-card.complete { border-color: var(--gold); }
+.admin-game-card.complete { border-color: var(--lightblue); }
 
 .admin-game-card-header {
   background: var(--navy);
@@ -698,7 +698,7 @@ body {
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 1px;
-  color: var(--gold);
+  color: var(--lightblue);
 }
 
 .admin-game-meta {
@@ -727,11 +727,11 @@ body {
   cursor: pointer;
 }
 
-.admin-team-row:hover { background: var(--winner-bg); border-color: var(--gold); }
+.admin-team-row:hover { background: var(--winner-bg); border-color: var(--lightblue); }
 
 .admin-team-row.is-winner {
   background: var(--winner-bg);
-  border-color: var(--gold);
+  border-color: var(--lightblue);
 }
 
 .admin-team-label {
@@ -764,7 +764,7 @@ body {
 
 .score-input:focus { border-color: var(--navy); }
 
-.admin-team-row.is-winner .score-input { border-color: var(--gold); color: var(--gold-dark); }
+.admin-team-row.is-winner .score-input { border-color: var(--lightblue); color: var(--lightblue-dark); }
 
 .winner-indicator {
   font-size: 16px;
@@ -854,7 +854,7 @@ body {
   font-size: 13px;
   font-weight: 500;
   box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-  border-left: 4px solid var(--gold);
+  border-left: 4px solid var(--lightblue);
   transform: translateY(80px);
   opacity: 0;
   transition: transform 0.3s, opacity 0.3s;
@@ -984,7 +984,7 @@ body {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .sp-card:hover {
-  border-color: var(--gold);
+  border-color: var(--lightblue);
   box-shadow: 0 4px 20px rgba(240,180,41,0.2);
 }
 .sp-logo-wrap {
@@ -1001,7 +1001,7 @@ body {
 .sp-logo-placeholder {
   width: 64px;
   height: 64px;
-  background: var(--gold);
+  background: var(--lightblue);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -1017,9 +1017,9 @@ body {
   font-weight: 700;
   letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--gold-dark);
+  color: var(--lightblue-dark);
   background: var(--winner-bg);
-  border: 1px solid var(--gold);
+  border: 1px solid var(--lightblue);
   border-radius: 3px;
   padding: 2px 8px;
   align-self: center;
@@ -1040,7 +1040,7 @@ body {
 .sp-link {
   font-size: 12px;
   font-weight: 600;
-  color: var(--gold-dark);
+  color: var(--lightblue-dark);
   text-decoration: none;
   letter-spacing: 0.5px;
   transition: color 0.2s;
@@ -1065,7 +1065,7 @@ body {
 }
 .game-card--spotlight {
   animation: spotlight-pulse 1s ease-out forwards;
-  border-color: var(--gold) !important;
+  border-color: var(--lightblue) !important;
   z-index: 2;
   position: relative;
 }
@@ -1095,7 +1095,7 @@ body {
 
 .sa-card {
   background: var(--white);
-  border: 4px solid var(--gold);
+  border: 4px solid var(--lightblue);
   border-radius: 20px;
   padding: 36px 48px;
   text-align: center;
@@ -1111,7 +1111,7 @@ body {
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 5px;
-  color: var(--gold-dark);
+  color: var(--lightblue-dark);
   margin-bottom: 8px;
   text-transform: uppercase;
 }
@@ -1145,7 +1145,7 @@ body {
   line-height: 1;
   color: var(--navy-dark);
 }
-.sa-team--win span { color: var(--gold-dark); }
+.sa-team--win span { color: var(--lightblue-dark); }
 .sa-vs {
   font-family: 'Oswald', sans-serif;
   font-size: 13px;
@@ -1158,7 +1158,7 @@ body {
   font-family: 'Oswald', sans-serif;
   font-size: 26px;
   font-weight: 700;
-  color: var(--gold-dark);
+  color: var(--lightblue-dark);
   letter-spacing: 1px;
   margin-bottom: 8px;
   text-transform: uppercase;

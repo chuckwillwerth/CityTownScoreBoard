@@ -217,6 +217,9 @@ body {
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--lightblue-dark);
+  padding-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .bracket-body {
@@ -257,9 +260,7 @@ body {
   padding: 8px 12px 8px 0;
 }
 
-.bracket-slot.empty {
-  /* spacer slot with no game */
-}
+/* .bracket-slot.empty — no styles needed; flex handles spacing */
 
 /* ─── Game Card ───────────────────────────────────────────────────────────── */
 .game-card {

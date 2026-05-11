@@ -68,24 +68,17 @@ function renderBracket(divKey) {
   const finalGame = games[finalGameId];
   const champion = finalGame ? finalGame.winner : null;
 
-  // Column flex grows with round importance: earliest = 1, each step adds 0.6
-  // Championship (last col) ends up widest; Play-In narrowest but still readable
+  // Column flex grows with round importance: earliest = 1, each step adds 0.3
   const numCols = div.columns.length;
-  const colFlex = i => parseFloat((1 + i * 0.6).toFixed(2));
+  const colFlex = i => parseFloat((1 + i * 0.3).toFixed(2));
 
-  // Build round labels row (flex AND min-width must match columns exactly so labels align)
-  let labelsHtml = div.columns.map((col, i) => {
-    const isChampCol = i === numCols - 1;
-    const minW = isChampCol ? '260px' : '210px';
-    return `<div class="round-label-cell" style="flex:${colFlex(i)};min-width:${minW}">${col.label}</div>`;
-  }).join('<div style="flex:0 0 40px"></div>') + '<div style="flex:0 0 180px"></div>';
-
-  // Build bracket body columns
+  // Build bracket body columns — labels are embedded inside each column so they
+  // stay perfectly aligned at every viewport size without any min-width juggling.
   let bodyHtml = '';
   div.columns.forEach((col, colIdx) => {
     const isChampCol = colIdx === numCols - 1;
 
-    let slotsHtml = col.slots.map(slot => {
+    const slotsHtml = col.slots.map(slot => {
       const slotStyle = `flex: ${slot.flex}`;
       if (!slot.gameId) {
         return `<div class="bracket-slot empty" style="${slotStyle}"></div>`;
@@ -96,7 +89,10 @@ function renderBracket(divKey) {
     }).join('');
 
     const champClass = isChampCol ? ' bracket-col--championship' : '';
-    bodyHtml += `<div class="bracket-col${champClass}" style="flex:${colFlex(colIdx)}" data-col="${colIdx}">${slotsHtml}</div>`;
+    bodyHtml += `<div class="bracket-col${champClass}" style="flex:${colFlex(colIdx)}" data-col="${colIdx}">
+      <div class="round-label-cell">${col.label}</div>
+      ${slotsHtml}
+    </div>`;
     if (colIdx < numCols - 1) {
       bodyHtml += `<div class="bracket-col-spacer"></div>`;
     }
@@ -112,7 +108,6 @@ function renderBracket(divKey) {
 
   container.innerHTML = `
     <div class="bracket-outer">
-      <div class="round-labels">${labelsHtml}</div>
       <div class="bracket-body" id="bracket-body-${divKey}">
         <svg class="bracket-svg" id="bracket-svg-${divKey}"></svg>
         ${bodyHtml}

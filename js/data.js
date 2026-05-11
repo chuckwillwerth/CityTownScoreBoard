@@ -157,6 +157,12 @@ function getGames(div) {
   return JSON.parse(JSON.stringify(DIVISIONS[div].games));
 }
 
+// Updates local cache only — no Firebase write. Use for in-progress score entry.
+function cacheGames(div, games) {
+  _cache[div] = JSON.parse(JSON.stringify(games));
+}
+
+// Writes scores/winners to Firebase (and updates cache). Call only on Set Winner or Clear.
 function persistGames(div, games) {
   const slim = {};
   for (const id in games) {

@@ -193,9 +193,8 @@ function updateScore(divKey, gameId, slot, value) {
   const parsed = value === '' ? null : parseInt(value, 10);
   if (slot === 1) g.score1 = isNaN(parsed) ? null : parsed;
   else            g.score2 = isNaN(parsed) ? null : parsed;
-  persistGames(divKey, games);
-  // Don't re-render panel (would lose focus) – just show toast
-  showToast('Score saved.');
+  // Cache only — Firebase write happens when Set Winner or Clear is clicked.
+  cacheGames(divKey, games);
 }
 
 function clearGame(divKey, gameId) {

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Score Admin · City/Town Tournament 2026</title>
+  <script src="js/analytics.js"></script>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="admin-body">
@@ -66,5 +67,8 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script src="js/data.js"></script>
   <script src="js/admin.js"></script>
+  <script>
+    if (window.setAnalyticsContext) window.setAnalyticsContext('admin');
+  </script>
 </body>
 </html>

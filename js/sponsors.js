@@ -32,7 +32,7 @@ const VENDORS = [
   { name: 'Ace of Diamonds', description: 'Softball Mini-Clinics', logo: 'images/sponsors/Ace of Diamonds.jpg', url: 'https://www.theacema.com' },
   { name: 'Kona Ice', description: 'Food Truck', logo: 'images/sponsors/Kona Ice.jpg', url: 'https://www.kona-ice.com/' },
   { name: 'Crafty Divas', description: 'Face Painting', logo: 'images/sponsors/Crafty Divas.jpg', url: 'https://www.instagram.com/craftydivasparties/' },
-  { name: 'Leanna\'s Photos', description: 'Event Photography', logo: 'images/sponsors/LP.jpg', url: 'https://www.leannasphotos.com/' },
+  { name: 'Leanna\'s Photos', description: 'Event Photography', logo: 'images/sponsors/LP.png', url: 'https://www.leannasphotos.com/' },
 
 ];
 

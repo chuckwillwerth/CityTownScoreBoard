@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>City/Town Tournament 2026 · MYGS</title>
   <meta name="description" content="Live bracket results for the City/Town 2026 Tournament — Medford Youth Girls Softball.">
+  <script src="js/analytics.js"></script>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -117,6 +118,8 @@
   <script src="js/bracket.js"></script>
   <script src="js/sponsors.js"></script>
   <script>
+    if (window.setAnalyticsContext) window.setAnalyticsContext('public_bracket');
+
     // Track which divisions have received their first Firebase snapshot so we
     // don't fire false score-change alerts on initial page load.
     const _firstLoad = { '10U': true, '12U': true };
@@ -129,7 +132,7 @@
         document.getElementById('last-updated').textContent = 'Results update in real-time';
       } else {
         const changed = checkForScoreChanges(div);
-        if (changed.length) showScoreAlert(changed[0]);
+        if (changed.length) showScoreAlert(div, changed[0]);
       }
       const panel = document.getElementById('panel-' + div);
       if (panel && panel.classList.contains('active')) renderBracket(div);

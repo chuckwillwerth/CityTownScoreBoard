@@ -17,6 +17,9 @@ function login(pin) {
 
 function logout() {
   sessionStorage.removeItem(SESSION_KEY);
+  if (window.trackAnalyticsEvent) {
+    window.trackAnalyticsEvent('admin_logout');
+  }
   showLogin();
 }
 
@@ -29,6 +32,9 @@ function showLogin() {
 function showDashboard() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('admin-dashboard').style.display = 'block';
+  if (window.trackAnalyticsEvent) {
+    window.trackAnalyticsEvent('admin_dashboard_view');
+  }
   renderAdminPanel('10U');
 }
 
@@ -153,6 +159,14 @@ function selectWinner(divKey, gameId, slot) {
   }
 
   persistGames(divKey, games);
+  if (window.trackAnalyticsEvent) {
+    window.trackAnalyticsEvent('admin_select_winner', {
+      division: divKey,
+      game_id: gameId,
+      slot,
+      winner_set: !!g.winner,
+    });
+  }
   renderAdminPanel(divKey);
   showToast(g.winner ? `Winner set: ${g.winner}` : 'Winner cleared.');
 }
@@ -179,6 +193,12 @@ function promptSetWinner(divKey, gameId) {
       return;
     }
     persistGames(divKey, games);
+    if (window.trackAnalyticsEvent) {
+      window.trackAnalyticsEvent('admin_set_winner_by_score', {
+        division: divKey,
+        game_id: gameId,
+      });
+    }
     renderAdminPanel(divKey);
     showToast(`Winner set: ${g.winner}`);
   } else {
@@ -195,6 +215,14 @@ function updateScore(divKey, gameId, slot, value) {
   else            g.score2 = isNaN(parsed) ? null : parsed;
   // Cache only — Firebase write happens when Set Winner or Clear is clicked.
   cacheGames(divKey, games);
+  if (window.trackAnalyticsEvent) {
+    window.trackAnalyticsEvent('admin_score_input_changed', {
+      division: divKey,
+      game_id: gameId,
+      slot,
+      score_value: isNaN(parsed) ? null : parsed,
+    });
+  }
 }
 
 function clearGame(divKey, gameId) {
@@ -203,6 +231,12 @@ function clearGame(divKey, gameId) {
   if (!g) return;
   g.score1 = null; g.score2 = null; g.winner = null;
   persistGames(divKey, games);
+  if (window.trackAnalyticsEvent) {
+    window.trackAnalyticsEvent('admin_game_cleared', {
+      division: divKey,
+      game_id: gameId,
+    });
+  }
   renderAdminPanel(divKey);
   showToast(`${gameId} result cleared.`);
 }
@@ -210,6 +244,9 @@ function clearGame(divKey, gameId) {
 function confirmReset(divKey) {
   if (confirm(`Are you sure you want to reset the entire ${divKey} bracket? This cannot be undone.`)) {
     resetAll(divKey);
+    if (window.trackAnalyticsEvent) {
+      window.trackAnalyticsEvent('admin_bracket_reset', { division: divKey });
+    }
     renderAdminPanel(divKey);
     showToast(`${divKey} bracket has been reset.`);
   }
@@ -219,6 +256,9 @@ function confirmReset(divKey) {
 function switchAdminTab(divKey) {
   document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.div === divKey));
   document.querySelectorAll('.admin-panel').forEach(p => p.classList.toggle('active', p.id === `admin-panel-${divKey}`));
+  if (window.trackAnalyticsEvent) {
+    window.trackAnalyticsEvent('admin_tab_switch', { tab_name: divKey });
+  }
   renderAdminPanel(divKey);
 }
 
@@ -243,10 +283,16 @@ document.addEventListener('DOMContentLoaded', () => {
   function attemptLogin() {
     const pin = pinInput.value.trim();
     if (login(pin)) {
+      if (window.trackAnalyticsEvent) {
+        window.trackAnalyticsEvent('admin_login_success');
+      }
       loginBtn.textContent = 'Loading…';
       loginBtn.disabled = true;
       initFirebase().then(() => showDashboard());
     } else {
+      if (window.trackAnalyticsEvent) {
+        window.trackAnalyticsEvent('admin_login_failed');
+      }
       loginError.textContent = 'Incorrect PIN. Please try again.';
       pinInput.classList.add('error');
       pinInput.value = '';

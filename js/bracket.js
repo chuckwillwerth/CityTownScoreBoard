@@ -211,7 +211,7 @@ function checkForScoreChanges(divKey) {
 
 // ─── Score Alert Overlay ──────────────────────────────────────────────────────
 
-function showScoreAlert(game) {
+function showScoreAlert(divKey, game) {
   const overlay = document.getElementById('score-alert');
   if (!overlay) return;
 
@@ -244,6 +244,13 @@ function showScoreAlert(game) {
     <div class="sa-confetti" aria-hidden="true">${confettiHtml}</div>`;
 
   overlay.classList.add('sa--visible');
+  if (window.trackAnalyticsEvent) {
+    window.trackAnalyticsEvent('score_alert_shown', {
+      division: divKey,
+      game_id: game.id,
+      has_winner: !!game.winner,
+    });
+  }
   overlay.onclick = () => overlay.classList.remove('sa--visible');
   clearTimeout(overlay._timer);
   overlay._timer = setTimeout(() => overlay.classList.remove('sa--visible'), 6000);
@@ -255,6 +262,9 @@ function showScoreAlert(game) {
 function switchTab(divKey) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.div === divKey));
   document.querySelectorAll('.division-panel').forEach(p => p.classList.toggle('active', p.id === `panel-${divKey}`));
+  if (window.trackAnalyticsEvent) {
+    window.trackAnalyticsEvent('public_tab_switch', { tab_name: divKey });
+  }
   if (DIVISIONS[divKey]) renderBracket(divKey);
 }
 

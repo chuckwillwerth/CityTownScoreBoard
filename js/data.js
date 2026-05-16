@@ -54,7 +54,7 @@ const DIVISIONS = {
       G4:  { id:'G4',  round:'Play-In',      time:'10:30 AM', field:'Tufts Pool Field (#1)',
              team1:'Belmont Lightning',       team2:'Boston Base',
              score1:null, score2:null, winner:null },
-      G6:  { id:'G6',  round:'Quarterfinal', time:'12:30 PM', field:'Tufts Pool Field (#1)',
+      G6:  { id:'G6',  round:'Quarterfinal', time:'12:30 PM', field:'Tufts Parking Lot Field (#2)',
              team1:'Winchester Red & Black',  team2Source:'G3',
              score1:null, score2:null, winner:null },
       G7:  { id:'G7',  round:'Quarterfinal', time:'12:30 PM', field:'Tufts Pool Field (#1)',
